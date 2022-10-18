@@ -1,103 +1,63 @@
 let questions = [
     {
-        num: 1,
-        question: "lorem",
-        answers: {
-            a: "",
-            b: "",
-
-        },
+        type: "bool",
+        question: "Är Nessie vit?",
+         
+        correctAnswer: true
+    },
+    {
+        type: "bool",
+        question: "Är nessie blå?",
+        answers: ["sant", "falskt",],
         correctAnswer: ""
     },
     {
-        num: 2,
-        question: "lorem",
-        answers: {
-            a: "",
-            b: "",
-
-        },
+        type: "bool",
+        question: "Är nessie grön?",
+        answers: ["sant", "falskt"],
         correctAnswer: ""
     },
     {
-        num: 3,
-        question: "lorem",
-        answers: {
-            a: "",
-            b: "",
-
-        },
+        type: "bool",
+        question: "Är nessie svart?",
+        answers: ["sant", "falskt"],
         correctAnswer: ""
     },
     {
-        num: 4,
-        question: "lorem",
-        answers: {
-            a: "",
-            b: "",
-
-        },
-        correctAnswer: ""
+        type: "multiple",
+        question: "Vilken färg är nessie?",
+        answers: ["blå", "svart", "brunt", "brun/vit"],
+        correctAnswer: "brun/vit"
     },
     {
-        num: 5,
-        question: "lorem",
-        answers: {
-            a: "",
-            b: "",
-
-        },
-        correctAnswer: ""
+        type: "multiple",
+        question: "Vad är nessie för slags djur?",
+        answers: ["elephant", "orm", "hund", "lemur"],
+        correctAnswer: "hund"
     },
     {
-        num: 6,
-        question: "lorem",
-        answers: {
-            a: "",
-            b: "",
-
-        },
-        correctAnswer: ""
+        type: "multiple",
+        question: "Är nessie köttätare?",
+        answers: ["sant", "falskt", "både och", "allätare"],
+        correctAnswer: "allätare"
     },
     {
-        num: 7,
-        question: "lorem",
-        answers: {
-            a: "",
-            b: "",
-
-        },
-        correctAnswer: ""
+        type: "multiple",
+        question: "Ness nessie ness ness?",
+        answers: ["sant", "falskt", "ja", "nej"],
+        correctAnswer: "sant"
     },
     {
-        num: 8,
-        question: "lorem",
-        answers: {
-            a: "",
-            b: "",
-
-        },
-        correctAnswer: ""
+        type: "checkboxes",
+        question: "klicka i fler än 1",
+        answers: ["sant", "falskt", "kanske sant", "inte sant"],
+        correctAnswer: "sant"
     },
     {
-        num: 9,
-        question: "lorem",
-        answers: {
-            a: "",
-            b: "",
-
-        },
-        correctAnswer: ""
-    },
-    {
-        num: 10,
-        question: "lorem",
-        answers: {
-            a: "",
-            b: "",
-
-        },
-        correctAnswer: ""
+        type: "checkboxes",
+        question: "woof",
+        answers: ["sant", "falskt", "kanske sant", "inte sant"],
+        correctAnswer: "sant"
     },
 ]
 
@@ -113,19 +73,61 @@ toggle.addEventListener("click", () => {
     }
 })
 
-let div = document.querySelector("#quiz")
-questions.forEach((question) => {
-    let h2 = document.createElement("h2");
-    let p = document.createElement("p")
-    let answer1 = document.createElement("input");
-    let answer2 = document.createElement("input");
-    answer1.type = 'radio';
-    answer1.name = 'answer';
-    answer2.type = 'radio';
-    answer2.name = 'answer';
-    p.innerHTML = `${question.question}`
-    h2.innerHTML = `Fråga ${question.num}`
 
-    div.append(h2, p, answer1, answer2)
+let quiz = document.querySelector("#quiz")
+
+questions.forEach((question, i) => {
     
-})
+    let h2 = document.createElement("h2");
+    h2.innerHTML = `${question.question}`;
+    quiz.append(h2)
+    
+    if(question.type === "multiple") {
+       question.answers.forEach((answer, i) => {
+            let label = document.createElement("label");
+            label.innerHTML = `${answer}`;
+            let answerVar = document.createElement("input");
+            answerVar.type = 'radio';
+            answerVar.name = 'answer' +i;
+            quiz.append(answerVar, label);
+        });
+    }
+    else if (question.type === "bool") {
+        let trueButton = document.createElement("input")
+        let trueLabel = document.createElement("label")
+        let falseButton = document.createElement("input")
+        let falseLabel = document.createElement("label")
+        trueLabel.innerHTML = `True`;
+        falseLabel.innerHTML = `False`;
+        trueButton.type = 'radio';
+        trueButton.name = 'trueAnswer' + i;
+        falseButton.type = 'radio';
+        falseButton.name = 'falseAnswer' + i;
+        quiz.append(trueLabel, trueButton, falseLabel ,falseButton)
+
+    } else if(question.type === "checkboxes") {
+    question.answers.forEach((answer, i) => {
+        let label1 = document.createElement("label");
+        label1.innerHTML = `${answer}`;
+        let check = document.createElement("input");
+        check.type = 'checkbox';
+        
+      quiz.append(label1, check)
+    });
+  }
+
+//Exempel
+// questions.forEach((question, i) => {
+//   let answers = question.answers;
+//   if(question.type == "multiple") {
+//     answers.forEach((answer, i) => {
+//       //Lägg till button
+//     }
+//   } else if(question.type == "multiple") {
+//     //Lägg till två buttons
+//   } else if(question.type == "checkboxes") {
+//     answers.forEach((answer, i) => {
+//       //Lägg till checkboxes
+//     }
+//   }
+    });
