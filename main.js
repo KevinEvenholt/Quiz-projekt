@@ -8,20 +8,17 @@ let questions = [
     {
         type: "bool",
         question: "Är nessie blå?",
-        answers: ["sant", "falskt",],
-        correctAnswer: ""
+        correctAnswer: false
     },
     {
         type: "bool",
         question: "Är nessie grön?",
-        answers: ["sant", "falskt"],
-        correctAnswer: ""
+        correctAnswer: false
     },
     {
         type: "bool",
         question: "Är nessie svart?",
-        answers: ["sant", "falskt"],
-        correctAnswer: ""
+        correctAnswer: false
     },
     {
         type: "multiple",
@@ -75,6 +72,10 @@ toggle.addEventListener("click", () => {
 
 
 let quiz = document.querySelector("#quiz")
+let resultBtn = document.querySelector("#results")
+let resutlsDiv = document.querySelector("#resultsDiv")
+let resulth2 = document.querySelector("#h2Result")
+
 
 questions.forEach((question, i) => {
     
@@ -83,11 +84,18 @@ questions.forEach((question, i) => {
     quiz.append(h2)
     
     if(question.type === "multiple") {
-       question.answers.forEach((answer, i) => {
+       question.answers.forEach((answer, x, correctAnswer) => {
             let label = document.createElement("label");
             label.innerHTML = `${answer}`;
             let answerVar = document.createElement("input");
+            //Om answer === correctAnswer i din question, lägg value till "correct" annars "wrong"
+            if(answer === correctAnswer){
+                answerVar.value = "correct";
+            }else {
+                answerVar.value = "wrong";
+            }
             answerVar.type = 'radio';
+            answerVar.className = 'answer';
             answerVar.name = 'answer' +i;
             quiz.append(answerVar, label);
         });
@@ -100,9 +108,11 @@ questions.forEach((question, i) => {
         trueLabel.innerHTML = `True`;
         falseLabel.innerHTML = `False`;
         trueButton.type = 'radio';
-        trueButton.name = 'trueAnswer' + i;
+        trueButton.name = 'true' + i;
+        trueButton.value = 'true';
         falseButton.type = 'radio';
-        falseButton.name = 'falseAnswer' + i;
+        falseButton.name = 'true' + i;
+        falseButton.value = 'false';
         quiz.append(trueLabel, trueButton, falseLabel ,falseButton)
 
     } else if(question.type === "checkboxes") {
@@ -116,18 +126,26 @@ questions.forEach((question, i) => {
     });
   }
 
-//Exempel
-// questions.forEach((question, i) => {
-//   let answers = question.answers;
-//   if(question.type == "multiple") {
-//     answers.forEach((answer, i) => {
-//       //Lägg till button
-//     }
-//   } else if(question.type == "multiple") {
-//     //Lägg till två buttons
-//   } else if(question.type == "checkboxes") {
-//     answers.forEach((answer, i) => {
-//       //Lägg till checkboxes
-//     }
-//   }
+
     });
+    
+    function showResults(question, quiz, resutlsDiv) {
+        let answerConteiner = document.querySelectorAll(".answer");
+        let numCorrect = 0;
+        let userAnswer = "";
+        //Loopa igenom alla frågor, en i taget, och kolla om dess icheckade svar är korrekt
+        questions.forEach((question, i) => {
+        //    userAnswer = (answerConteiner[i].querySelector('[name:answer'+i+']:checked')||{}).value;
+        let selectedAnswer = document.querySelector(`[name:'answer'${i}]:checked`).value;
+        //hämta alla icheckade svar, kolla deras value - Om de är correct, lägg till ett poäng.
+
+        if(selectedAnswer === correctAnswer) {
+            numCorrect++;
+        }
+        
+        resulth2.innerHTML = numCorrect + 'out of' + questions.length;
+    });
+}
+
+    
+    resultBtn.addEventListener("click", showResults);
