@@ -48,13 +48,13 @@ let questions = [
         type: "checkboxes",
         question: "klicka i fler än 1",
         answers: ["sant", "falskt", "kanske sant", "inte sant"],
-        correctAnswer: "sant"
+        correctAnswer: ["sant", "falskt"]
     },
     {
         type: "checkboxes",
         question: "woof",
         answers: ["sant", "falskt", "kanske sant", "inte sant"],
-        correctAnswer: "sant"
+        correctAnswer: ["sant", "kanske sant"]
     },
 ]
 
@@ -83,24 +83,21 @@ questions.forEach((question, i) => {
     h2.innerHTML = `${question.question}`;
     quiz.append(h2)
     
-    if(question.type === "multiple") {
-       question.answers.forEach((answer, x, correctAnswer) => {
+    if(question.type === "multiple" || question.type ==="checkboxes") {
+       question.answers.forEach((answer) => {
             let label = document.createElement("label");
             label.innerHTML = `${answer}`;
             let answerVar = document.createElement("input");
-            //Om answer === correctAnswer i din question, lägg value till "correct" annars "wrong"
-            if(answer === correctAnswer){
-                answerVar.value = "correct";
-            }else {
-                answerVar.value = "wrong";
+            answerVar.value = `${answer}`;
+            if(question.type ==="multiple"){
+                answerVar.type = 'radio';   
+            } else {
+                answerVar.type = 'checkbox';
             }
-            answerVar.type = 'radio';
-            answerVar.className = 'answer';
             answerVar.name = 'answer' +i;
             quiz.append(answerVar, label);
         });
-    }
-    else if (question.type === "bool") {
+    } else {
         let trueButton = document.createElement("input")
         let trueLabel = document.createElement("label")
         let falseButton = document.createElement("input")
@@ -108,43 +105,43 @@ questions.forEach((question, i) => {
         trueLabel.innerHTML = `True`;
         falseLabel.innerHTML = `False`;
         trueButton.type = 'radio';
-        trueButton.name = 'true' + i;
+        trueButton.name = 'answer' + i;
         trueButton.value = 'true';
         falseButton.type = 'radio';
-        falseButton.name = 'true' + i;
+        falseButton.name = 'answer' + i;
         falseButton.value = 'false';
         quiz.append(trueLabel, trueButton, falseLabel ,falseButton)
 
-    } else if(question.type === "checkboxes") {
-    question.answers.forEach((answer, i) => {
-        let label1 = document.createElement("label");
-        label1.innerHTML = `${answer}`;
-        let check = document.createElement("input");
-        check.type = 'checkbox';
-        
-      quiz.append(label1, check)
-    });
-  }
+    }
 
 
     });
     
-    function showResults(question, quiz, resutlsDiv) {
-        let answerConteiner = document.querySelectorAll(".answer");
+    function showResults() {
+      
         let numCorrect = 0;
-        let userAnswer = "";
         //Loopa igenom alla frågor, en i taget, och kolla om dess icheckade svar är korrekt
         questions.forEach((question, i) => {
-        //    userAnswer = (answerConteiner[i].querySelector('[name:answer'+i+']:checked')||{}).value;
-        let selectedAnswer = document.querySelector(`[name:'answer'${i}]:checked`).value;
+            if(question.type === "bool" || question.type === "multiple") {
+                let button = document.querySelector(`[name='answer${i}']:checked`);
+                let selectedAnswer = button.value;
+                if(selectedAnswer === question.correctAnswer.toString()) {
+                    numCorrect++;
+                }
+            } else {
+                const answers = document.querySelectorAll(`[name='answer${i}']:checked`);
+                const selectedAnswers = Array.from(answers);   
+                if(selectedAnswers.every(element => question.answers.includes(element.value))) {
+                    numCorrect++;
+                }
+            }
+
         //hämta alla icheckade svar, kolla deras value - Om de är correct, lägg till ett poäng.
 
-        if(selectedAnswer === correctAnswer) {
-            numCorrect++;
-        }
         
-        resulth2.innerHTML = numCorrect + 'out of' + questions.length;
+        
     });
+    resulth2.innerHTML = numCorrect + 'out of' + questions.length;
 }
 
     
