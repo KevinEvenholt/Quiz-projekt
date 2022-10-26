@@ -8,3 +8,9 @@
     color: white;
     background: black;
 }
+#icon
+{
+    width: 60px;
+    cursor: pointer;
+
+}
