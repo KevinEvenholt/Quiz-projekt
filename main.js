@@ -1,60 +1,60 @@
 let questions = [
     {
         type: "bool",
-        question: "Är Nessie vit?",
+        question: "Sebastian Vettel is a 4th time world champion?",
          
         correctAnswer: true
     },
     {
         type: "bool",
-        question: "Är nessie blå?",
+        question: "Jenson Button has never had a poduim at his home race?",
+        correctAnswer: true
+    },
+    {
+        type: "bool",
+        question: "David Coulthard won the 2006 Monaco GP?",
         correctAnswer: false
     },
     {
         type: "bool",
-        question: "Är nessie grön?",
-        correctAnswer: false
-    },
-    {
-        type: "bool",
-        question: "Är nessie svart?",
-        correctAnswer: false
+        question: "Red Bull Racing holds the world record for fastest ever pit stop?",
+        correctAnswer: true
     },
     {
         type: "multiple",
-        question: "Vilken färg är nessie?",
-        answers: ["blå", "svart", "brunt", "brun/vit"],
-        correctAnswer: "brun/vit"
+        question: "Who was the first mexican driver to get a podium in mexico?",
+        answers: ["Ricardo Rodríguez", "Pedro Rodríguez", "Sergio Perez", "Moisés Solana"],
+        correctAnswer: "Sergio Perez"
     },
     {
         type: "multiple",
-        question: "Vad är nessie för slags djur?",
-        answers: ["elephant", "orm", "hund", "lemur"],
-        correctAnswer: "hund"
+        question: "Which team did Red Bull takeover in 2004 ahead of their debut year in 2005?",
+        answers: ["Lotus F1", "Jaguar Racing", "BMW Sauber", "Super Aguri"],
+        correctAnswer: "Jaguar Racing"
     },
     {
         type: "multiple",
-        question: "Är nessie köttätare?",
-        answers: ["sant", "falskt", "både och", "allätare"],
-        correctAnswer: "allätare"
+        question: "Who was Red Bulls first team principal?",
+        answers: ["Christian Horner", "Toto Wolf", "Mattia Binotto", "Günther Steiner"],
+        correctAnswer: "Christian Horner"
     },
     {
         type: "multiple",
-        question: "Ness nessie ness ness?",
-        answers: ["sant", "falskt", "ja", "nej"],
-        correctAnswer: "sant"
+        question: "Who is Red Bulls current engine supplier?",
+        answers: ["Mercedes", "Ferrari", "Renault", "Honda"],
+        correctAnswer: "Honda"
     },
     {
         type: "checkboxes",
-        question: "klicka i fler än 1",
-        answers: ["sant", "falskt", "kanske sant", "inte sant"],
-        correctAnswer: ["sant", "falskt"]
+        question: "Which Red Bull drivers have won World titles?",
+        answers: ["Daniel Riccardo", "Max Verstappen", "Mark Webber", "Sebastian Vettel"],
+        correctAnswer: ["Max Verstappen", "Sebastian Vettel"]
     },
     {
         type: "checkboxes",
-        question: "woof",
-        answers: ["sant", "falskt", "kanske sant", "inte sant"],
-        correctAnswer: ["sant", "kanske sant"]
+        question: "Is Max Verstappen a two time world champion?",
+        answers: ["Yes", "No", "Yes but its controversial", "Yes but not really"],
+        correctAnswer: ["Yes", "Yes but its controversial", "Yes but not really"]
     },
 ]
 
@@ -65,17 +65,16 @@ toggle.addEventListener("click", () => {
     
     if(darkMode.className === "whiteMode") {
         document.getElementById("toggledarkMode").className = "darkMode";
+        
     }else if(darkMode.className === "darkMode") {
         document.getElementById("toggledarkMode").className = "whiteMode";
     }
 });
 
-
 let quiz = document.querySelector("#quiz");
 let resultBtn = document.querySelector("#results");
 let resutlsDiv = document.querySelector("#resultsDiv");
 let resulth2 = document.querySelector("#h2Result");
-
 
 questions.forEach((question, i) => {
     
@@ -124,9 +123,9 @@ questions.forEach((question, i) => {
                 let selectedAnswer = button.value;
                 if(selectedAnswer === question.correctAnswer.toString()) {
                     numCorrect++;
-                    title.style.color = 'green';
+                    title.style.color = '#006400';
                 } else{
-                    title.style.color = 'red';
+                    title.style.color = '#8B0000';
                 }
             } else {
                 let answers = document.querySelectorAll(`input[type='checkbox'][name='answer${i}']:checked`);
@@ -135,28 +134,28 @@ questions.forEach((question, i) => {
                 answerList.push(box.value);
 
             });
-            
                 if(answerList.length === question.correctAnswer.length && answerList.every(el => question.correctAnswer.includes(el))) {
                     console.log(answerList);
                             console.log(question.correctAnswer);
                             console.log("correct answer");
                     numCorrect++;
-                    title.style.color = 'green';
+                    title.style.color = '#006400';
                 } else {
-                    title.style.color = 'red';
+                    title.style.color = '#8B0000';
                 }   
             }
     });
+
+    let summary = numCorrect + ' out of ' + questions.length + '(' + numCorrect + 0 + '%' + ')';
     if(numCorrect >= questions.length * 0.75) {
-            resulth2.innerHTML = numCorrect + ' out of ' + questions.length + '(' + numCorrect % questions.length + 0 + '%' + ')';
+            resulth2.innerHTML = summary;
             resulth2.style.color = 'green';
         } else if (numCorrect >= questions.length * 0.5) {
-            resulth2.innerHTML = numCorrect + ' out of ' + questions.length + '(' + numCorrect % questions.length + 0 + '%' + ')';
+            resulth2.innerHTML = summary;
             resulth2.style.color = "orange";
         } else {
-            resulth2.innerHTML = numCorrect + ' out of ' + questions.length + '(' + numCorrect % questions.length + 0 + '%' + ')';
+            resulth2.innerHTML = summary;
             resulth2.style.color = 'red';
-        }
-    
+        }   
 }
 resultBtn.addEventListener("click", showResults);
